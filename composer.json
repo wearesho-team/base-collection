@@ -1,0 +1,41 @@
+{
+  "name": "wearesho-team/base-collection",
+  "description": "Typed collection based on ArrayObject",
+  "type": "library",
+  "require": {
+    "php": "^7.1"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.3",
+    "phpunit/phpunit": "^7.4"
+  },
+  "authors": [
+    {
+      "name": "Roman Varkuta",
+      "email": "roman.varkuta@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Wearesho\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Wearesho\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "process-timeout": 1800,
+    "sort-packages": true,
+    "platform": {
+      "php": "7.2"
+    }
+  },
+  "scripts": {
+    "lint": "./vendor/bin/phpcs --standard=PSR2 ./src ./tests",
+    "phpcbf": "./vendor/bin/phpcbf --standard=PSR2 ./src ./tests",
+    "test": "./vendor/bin/phpunit"
+  }
+}
