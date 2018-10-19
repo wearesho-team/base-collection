@@ -1,4 +1,4 @@
-# Base-collection
+# Base Сollection
 
 Implementation of typed collection.
 
@@ -31,10 +31,6 @@ class MyCollection extends BaseCollection
 And now you have typed collection!
 
 If you will try append item that not instance of your type you will catch an `InvalidArgumentException`
-
-## Requirements
-
-- **PHP >= 7.1**
 
 ## Authors
 
