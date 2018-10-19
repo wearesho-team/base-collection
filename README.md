@@ -35,6 +35,8 @@ If you will try append item that not instance of your type you will catch an `In
 ## Authors
 
 - [Roman <KartaviK> Varkuta](mailto:roman.varkuta@gmail.com) 
+- [Alexander <Horat1us> Letnikow](mailto:reclamme@gmail.com)
 
 ## License
-none
+[MIT](./LICENSE)
+
