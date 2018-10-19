@@ -1,4 +1,6 @@
 # Base Сollection
+[![Build Status](https://travis-ci.org/wearesho-team/base-collection.svg?branch=master)](https://travis-ci.org/wearesho-team/base-collection)
+[![codecov](https://codecov.io/gh/wearesho-team/base-collection/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/base-collection)
 
 Implementation of typed collection.
 
