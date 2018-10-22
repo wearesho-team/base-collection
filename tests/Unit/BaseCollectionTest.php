@@ -132,4 +132,26 @@ class BaseCollectionTest extends TestCase
             $this->fakeBaseCollection->jsonSerialize()
         );
     }
+
+    public function testSuccessAggregate(): void
+    {
+        $collection = $this->fakeBaseCollection::aggregate(
+            [new \stdClass(), new \stdClass(), new \stdClass(), new \stdClass(),],
+            new $this->fakeBaseCollection([new \stdClass(), new \stdClass(), new \stdClass(), new \stdClass(),]),
+            [new \stdClass(), new \stdClass(), new \stdClass(), new \stdClass(),]
+        );
+
+        $this->assertCount(12, $collection);
+    }
+
+    public function testFailedAggregate(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element Exception must be instance of stdClass');
+
+        $this->fakeBaseCollection::aggregate(
+            [new \stdClass(), new \stdClass(), new \stdClass(), new \stdClass(),],
+            new $this->fakeBaseCollection([new \Exception()])
+        );
+    }
 }

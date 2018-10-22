@@ -24,6 +24,19 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         parent::__construct($elements, $flags, $iteratorClass);
     }
 
+    public static function aggregate(iterable ...$iterables): BaseCollection
+    {
+        $items = [];
+
+        foreach ($iterables as $iterable) {
+            foreach ($iterable as $item) {
+                $items[] = $item;
+            }
+        }
+
+        return new static($items);
+    }
+
     /**
      * Override to customize type of your collection.
      * Must return declared class name
