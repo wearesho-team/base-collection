@@ -105,6 +105,61 @@ class BaseCollectionTest extends TestCase
         $this->assertArrayHasKey(1, $this->fakeBaseCollection);
     }
 
+    public function testMap(): void
+    {
+        $elements = [
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+        ];
+
+        foreach ($elements as $index => $element) {
+            $element->value = $index + 1;
+        }
+
+        $this->fakeBaseCollection
+            ->append($elements[0])
+            ->append($elements[1]);
+
+        $this->assertArraySubset(
+            [2, 4],
+            $this->fakeBaseCollection->map(function (\stdClass $item) {
+                return $item->value * 2;
+            })
+        );
+
+        /** @var BaseCollection $secondCollection */
+        $secondCollection = new $this->fakeBaseCollection();
+        $secondCollection
+            ->append($elements[2])
+            ->append($elements[3]);
+
+        $mapped = $this->fakeBaseCollection->map(function (\stdClass $item) {
+            return $item->value + 10;
+        }, $secondCollection);
+
+        $this->assertArraySubset(
+            [11, 13, 12, 14,],
+            $mapped
+        );
+
+        /** @var BaseCollection $thirdCollection */
+        $thirdCollection = new $this->fakeBaseCollection();
+        $thirdCollection
+            ->append($elements[4])
+            ->append($elements[5]);
+
+        $this->assertArraySubset(
+            ['0', '2', '4', '1', '3', '5',],
+            $this->fakeBaseCollection->map(function (\stdClass $item) {
+                return (string)($item->value - 1);
+            }, $secondCollection, $thirdCollection)
+        );
+    }
+
     public function testFailedOffsetSet(): void
     {
         $this->assertEmpty($this->fakeBaseCollection);
