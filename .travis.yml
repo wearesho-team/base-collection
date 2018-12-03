@@ -10,8 +10,8 @@ before_script:
     - travis_retry composer install --no-interaction --prefer-source
 
 script:
-    - ./vendor/bin/phpcs --standard=PSR2 ./src ./tests
-    - ./vendor/bin/phpunit --coverage-clover=coverage.xml
+    - travis_retry composer lint
+    - travis_retry composer cover
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
