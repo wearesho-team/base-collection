@@ -68,25 +68,9 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return (array)$this;
     }
 
-    public function map(\Closure $closure, BaseCollection ...$collections)
+    public function map(\Closure $closure): array
     {
-        $result = [];
-        $values[] = $this->jsonSerialize();
-
-        foreach ($collections as $index => $collection) {
-            $values[] = $collection->jsonSerialize();
-        }
-
-        foreach (range(0, $this->count() - 1) as $index) {
-            $arguments = array_map(function ($collection) use ($index) {
-                return $collection[$index];
-            }, $values);
-            foreach ($arguments as $argument) {
-                $result[] = call_user_func($closure, $argument);
-            }
-        }
-
-        return $result;
+        return array_map($closure, (array)$this);
     }
 
     /**

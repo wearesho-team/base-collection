@@ -120,43 +120,16 @@ class BaseCollectionTest extends TestCase
             $element->value = $index + 1;
         }
 
-        $this->fakeBaseCollection
-            ->append($elements[0])
-            ->append($elements[1]);
+        foreach ($elements as $element) {
+            $this->fakeBaseCollection->append($element);
+        }
+
 
         $this->assertArraySubset(
-            [2, 4],
-            $this->fakeBaseCollection->map(function (\stdClass $item): int {
-                return $item->value * 2;
-            })
-        );
-
-        /** @var BaseCollection $secondCollection */
-        $secondCollection = new $this->fakeBaseCollection();
-        $secondCollection
-            ->append($elements[2])
-            ->append($elements[3]);
-
-        $mapped = $this->fakeBaseCollection->map(function (\stdClass $item): int {
-            return $item->value + 10;
-        }, $secondCollection);
-
-        $this->assertArraySubset(
-            [11, 13, 12, 14,],
-            $mapped
-        );
-
-        /** @var BaseCollection $thirdCollection */
-        $thirdCollection = new $this->fakeBaseCollection();
-        $thirdCollection
-            ->append($elements[4])
-            ->append($elements[5]);
-
-        $this->assertArraySubset(
-            ['0', '2', '4', '1', '3', '5',],
+            ['0', '1', '2', '3', '4', '5',],
             $this->fakeBaseCollection->map(function (\stdClass $item): string {
                 return (string)($item->value - 1);
-            }, $secondCollection, $thirdCollection)
+            })
         );
     }
 
