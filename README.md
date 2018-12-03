@@ -46,6 +46,7 @@ use Wearesho\BaseCollection;
 $collection = new MyCollection([
     new \stdClass(),
     new \stdClass(),
+    new \stdClass(),
 ]);
 
 $sum = $collection->sum(function (\stdClass $item) {
