@@ -116,6 +116,20 @@ class BaseCollectionTest extends TestCase
         $this->fakeBaseCollection->offsetSet(0, new \Exception());
     }
 
+    public function testSum(): void
+    {
+        $this->fakeBaseCollection
+            ->append(new \stdClass())
+            ->append(new \stdClass())
+            ->append(new \stdClass());
+
+        $sum = $this->fakeBaseCollection->sum(function (\stdClass $item) {
+            return mb_strlen(get_class($item));
+        });
+
+        $this->assertEquals(24, $sum);
+    }
+
     public function testJsonSerialize(): void
     {
         $this->fakeBaseCollection

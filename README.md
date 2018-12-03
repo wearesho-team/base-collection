@@ -25,7 +25,7 @@ class MyCollection extends BaseCollection
 {
     public function type(): string
     {
-        return stdClass::class;
+        return \stdClass::class;
     }
 }
 ```
@@ -33,6 +33,25 @@ class MyCollection extends BaseCollection
 And now you have typed collection!
 
 If you will try append item that not instance of your type you will catch an `InvalidArgumentException`
+
+### Additional methods
+
+- `sum(\Closure): int|float`
+```php
+<?php
+
+use Wearesho\BaseCollection;
+
+/** @var BaseCollection $collection */
+$collection = new MyCollection([
+    new \stdClass(),
+    new \stdClass(),
+]);
+
+$sum = $collection->sum(function (\stdClass $item) {
+    return mb_strlen(get_class($item)); // 8
+}); // 24
+```
 
 ## Authors
 
