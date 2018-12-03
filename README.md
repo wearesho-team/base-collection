@@ -32,6 +32,25 @@ And now you have typed collection!
 
 If you will try append item that not instance of your type you will catch an `InvalidArgumentException`
 
+### Additional methods
+
+- `map(\Closure): array`
+```php
+<?php
+
+/** @var \Wearesho\BaseCollection $collection */
+$collection = new MyCollection([
+    new stdClass(),
+    new stdClass(),
+]);
+
+$collection->map(function (stdClass $obj) {
+    return get_class($obj);
+});
+
+// ['stdClass', 'stdClass',]
+```
+
 ## Authors
 
 - [Roman <KartaviK> Varkuta](mailto:roman.varkuta@gmail.com) 
