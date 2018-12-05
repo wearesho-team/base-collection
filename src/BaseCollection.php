@@ -69,6 +69,25 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
     }
 
     /**
+     * @param mixed|mixed[] $value
+     * @param \Closure $callback
+     *
+     * @return array
+     */
+    public function find($value, \Closure $callback): array
+    {
+        $result = [];
+
+        foreach ($this as $item) {
+            if (\in_array(\call_user_func($callback, $item), (array)$value, true)) {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param mixed $object
      *
      * @throws \InvalidArgumentException

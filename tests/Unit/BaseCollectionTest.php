@@ -105,6 +105,41 @@ class BaseCollectionTest extends TestCase
         $this->assertArrayHasKey(1, $this->fakeBaseCollection);
     }
 
+    public function testFind(): void
+    {
+        $elements = [
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+        ];
+
+        foreach ($elements as $i => $element) {
+            $element->value = $i;
+            $this->fakeBaseCollection->append($element);
+        }
+
+
+        $callback = function (\stdClass $std): int {
+            return $std->value;
+        };
+
+        $this->assertEquals(
+            $elements[0],
+            $this->fakeBaseCollection->find(0, $callback)[0]
+        );
+        $this->assertEquals(
+            $elements[1],
+            $this->fakeBaseCollection->find(1, $callback)[0]
+        );
+        $this->assertEquals(
+            [
+                $elements[0],
+                $elements[1]
+            ],
+            $this->fakeBaseCollection->find([0, 1], $callback)
+        );
+    }
+
     public function testFailedOffsetSet(): void
     {
         $this->assertEmpty($this->fakeBaseCollection);
