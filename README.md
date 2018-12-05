@@ -34,6 +34,25 @@ And now you have typed collection!
 
 If you will try append item that not instance of your type you will catch an `InvalidArgumentException`
 
+## Additional methods
+
+- `pop(): void`
+```php
+<?php
+
+use Wearesho\BaseCollection;
+
+/** @var BaseCollection $collection */
+$collection = new MyCollection([
+    new \stdClass(),
+    new \stdClass(),
+]);
+
+$collection->pop(); // stdClass
+$collection->pop(); // stdClass
+$collection->pop(); // null
+```
+
 ## Authors
 
 - [Roman <KartaviK> Varkuta](mailto:roman.varkuta@gmail.com) 
