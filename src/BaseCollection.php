@@ -63,6 +63,19 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @return object|null
+     */
+    public function pop()
+    {
+        $arr = $this->getArrayCopy();
+        $popped = array_pop($arr);
+
+        $this->exchangeArray($arr);
+
+        return $popped;
+    }
+
     public function jsonSerialize(): array
     {
         return (array)$this;

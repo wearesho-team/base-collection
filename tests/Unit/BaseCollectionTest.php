@@ -132,4 +132,17 @@ class BaseCollectionTest extends TestCase
             $this->fakeBaseCollection->jsonSerialize()
         );
     }
+
+    public function testPop(): void
+    {
+        $this->fakeBaseCollection
+            ->append(new \stdClass())
+            ->append(new \stdClass())
+            ->append(new \stdClass());
+
+        $this->assertInstanceOf(\stdClass::class, $this->fakeBaseCollection->pop());
+        $this->assertInstanceOf(\stdClass::class, $this->fakeBaseCollection->pop());
+        $this->assertInstanceOf(\stdClass::class, $this->fakeBaseCollection->pop());
+        $this->assertNull($this->fakeBaseCollection->pop());
+    }
 }
