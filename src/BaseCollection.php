@@ -68,6 +68,11 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return (array)$this;
     }
 
+    public function map(\Closure $closure): array
+    {
+        return array_map($closure, (array)$this);
+    }
+
     /**
      * @param \Closure $callback
      *
@@ -75,7 +80,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
      */
     public function sum(\Closure $callback)
     {
-        return array_sum(array_map($callback, (array)$this));
+        return array_sum($this->map($callback));
     }
 
     /**

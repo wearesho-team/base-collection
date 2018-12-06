@@ -105,6 +105,34 @@ class BaseCollectionTest extends TestCase
         $this->assertArrayHasKey(1, $this->fakeBaseCollection);
     }
 
+    public function testMap(): void
+    {
+        $elements = [
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+        ];
+
+        foreach ($elements as $index => $element) {
+            $element->value = $index + 1;
+        }
+
+        foreach ($elements as $element) {
+            $this->fakeBaseCollection->append($element);
+        }
+
+
+        $this->assertArraySubset(
+            ['0', '1', '2', '3', '4', '5',],
+            $this->fakeBaseCollection->map(function (\stdClass $item): string {
+                return (string)($item->value - 1);
+            })
+        );
+    }
+
     public function testFailedOffsetSet(): void
     {
         $this->assertEmpty($this->fakeBaseCollection);

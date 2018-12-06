@@ -36,7 +36,7 @@ If you will try append item that not instance of your type you will catch an `In
 
 ### Additional methods
 
-- `sum(\Closure): int|float`
+- `sum(\Closure $callback): int|float`
 ```php
 <?php
 
@@ -52,6 +52,23 @@ $collection = new MyCollection([
 $sum = $collection->sum(function (\stdClass $item) {
     return mb_strlen(get_class($item)); // 8
 }); // 24
+```
+
+- `map(\Closure $callback): array`
+```php
+<?php
+
+/** @var \Wearesho\BaseCollection $collection */
+$collection = new MyCollection([
+    new stdClass(),
+    new stdClass(),
+]);
+
+$collection->map(function (stdClass $obj) {
+    return mb_strcut(get_class($obj), 0, 2);
+});
+
+// ['st', 'st',]
 ```
 
 ## Authors
