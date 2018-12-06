@@ -60,11 +60,11 @@ $sum = $collection->sum(function (\stdClass $item) {
 
 /** @var \Wearesho\BaseCollection $collection */
 $collection = new MyCollection([
-    new stdClass(),
-    new stdClass(),
+    new \stdClass(),
+    new \stdClass(),
 ]);
 
-$collection->map(function (stdClass $obj) {
+$collection->map(function (\stdClass $obj) {
     return mb_strcut(get_class($obj), 0, 2);
 });
 
