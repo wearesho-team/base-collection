@@ -75,13 +75,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
      */
     public function sum(\Closure $callback)
     {
-        $sum = 0;
-
-        foreach ((array)$this as $item) {
-            $sum += call_user_func($callback, $item);
-        }
-
-        return $sum;
+        return array_sum(array_map($callback, (array)$this));
     }
 
     /**
