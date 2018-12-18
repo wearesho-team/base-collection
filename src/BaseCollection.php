@@ -68,6 +68,11 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return (array)$this;
     }
 
+    public function filter(\Closure $callback): BaseCollection
+    {
+        return new static(\array_filter((array)$this, $callback));
+    }
+
     /**
      * @param mixed $object
      *
@@ -78,7 +83,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         $needType = $this->type();
 
         if (!$object instanceof $needType) {
-            throw new \InvalidArgumentException("Element " . get_class($object) . " must be instance of " . $needType);
+            throw new \InvalidArgumentException("Element " . \get_class($object) . " must be instance of " . $needType);
         }
     }
 }

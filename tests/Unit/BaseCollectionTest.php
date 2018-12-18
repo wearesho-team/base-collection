@@ -4,6 +4,8 @@ namespace Wearesho\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Wearesho\BaseCollection;
+use Wearesho\Tests\Mock\Collection;
+use Wearesho\Tests\Mock\Element;
 
 /**
  * Class BaseCollectionTest
@@ -131,5 +133,31 @@ class BaseCollectionTest extends TestCase
             ],
             $this->fakeBaseCollection->jsonSerialize()
         );
+    }
+
+    public function testFilter(): void
+    {
+        $collection = new Collection([
+            new Element('need'),
+            new Element('need'),
+            new Element('not need'),
+            new Element('not need'),
+            new Element('need'),
+        ]);
+
+        $filtered = $collection->filter(function (Element $element): bool {
+            return $element->value === 'need';
+        });
+
+        $this->assertNotSame($collection, $filtered);
+
+        $this->assertArrayHasKey(0, $filtered);
+        $this->assertEquals('need', $filtered[0]->value);
+        $this->assertArrayHasKey(1, $filtered);
+        $this->assertEquals('need', $filtered[1]->value);
+        $this->assertArrayNotHasKey(2, $filtered);
+        $this->assertArrayNotHasKey(3, $filtered);
+        $this->assertArrayHasKey(4, $filtered);
+        $this->assertEquals('need', $filtered[4]->value);
     }
 }
