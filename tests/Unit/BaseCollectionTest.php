@@ -132,4 +132,51 @@ class BaseCollectionTest extends TestCase
             $this->fakeBaseCollection->jsonSerialize()
         );
     }
+
+    public function testExchangeArray(): void
+    {
+        $this->fakeBaseCollection
+            ->append(new \stdClass())
+            ->append(new \stdClass())
+            ->append(new \stdClass());
+
+        $newData = [
+            new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+        ];
+
+        foreach ($newData as $newDatum) {
+            $newDatum->value = \mt_rand();
+        }
+
+        $oldCollection = $this->fakeBaseCollection->exchangeArray($newData);
+
+        $this->assertEquals(
+            new $this->fakeBaseCollection(
+                [
+                    new \stdClass(),
+                    new \stdClass(),
+                    new \stdClass(),
+                ]
+            ),
+            $oldCollection
+        );
+        $this->assertNotNull($this->fakeBaseCollection[0]->value);
+        $this->assertNotNull($this->fakeBaseCollection[1]->value);
+        $this->assertNotNull($this->fakeBaseCollection[2]->value);
+    }
+
+    public function testFAiledExchangeArray(): void
+    {
+        $this->fakeBaseCollection
+            ->append(new \stdClass())
+            ->append(new \stdClass())
+            ->append(new \stdClass());
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Input must be an iterable element');
+
+        $this->fakeBaseCollection->exchangeArray("invalid data");
+    }
 }
