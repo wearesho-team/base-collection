@@ -116,6 +116,19 @@ class BaseCollectionTest extends TestCase
         $this->fakeBaseCollection->offsetSet(0, new \Exception());
     }
 
+    public function testShift(): void
+    {
+        $this->fakeBaseCollection->exchangeArray([
+            'first' => new \stdClass(),
+            'second' => new \stdClass(),
+            'third' => new \stdClass(),
+        ]);
+
+        $this->assertEquals(new \stdClass(), $this->fakeBaseCollection->shift());
+        $this->assertCount(2, $this->fakeBaseCollection);
+        $this->assertArrayNotHasKey('first', $this->fakeBaseCollection);
+    }
+
     public function testJsonSerialize(): void
     {
         $this->fakeBaseCollection

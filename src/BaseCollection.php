@@ -69,6 +69,18 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
     }
 
     /**
+     * @return mixed|object
+     */
+    public function shift()
+    {
+        $items = $this->getArrayCopy();
+        $item = \array_shift($items);
+        $this->exchangeArray($items);
+
+        return $item;
+    }
+
+    /**
      * @param mixed $object
      *
      * @throws \InvalidArgumentException
