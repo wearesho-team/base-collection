@@ -65,7 +65,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return (array)$this;
+        return $this->getArrayCopy();
     }
 
     /**
