@@ -63,7 +63,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return $this;
     }
 
-    public function exchangeArray($input): BaseCollection
+    public function exchangeArray($input): array
     {
         if (!\is_iterable($input)) {
             throw new \InvalidArgumentException("Input must be an iterable element");
@@ -73,7 +73,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
             $this->validate($item);
         }
 
-        return new static(parent::exchangeArray($input));
+        return parent::exchangeArray($input);
     }
 
     public function jsonSerialize(): array

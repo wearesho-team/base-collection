@@ -153,13 +153,11 @@ class BaseCollectionTest extends TestCase
         $oldCollection = $this->fakeBaseCollection->exchangeArray($newData);
 
         $this->assertEquals(
-            new $this->fakeBaseCollection(
-                [
-                    new \stdClass(),
-                    new \stdClass(),
-                    new \stdClass(),
-                ]
-            ),
+            [
+                new \stdClass(),
+                new \stdClass(),
+                new \stdClass(),
+            ],
             $oldCollection
         );
         $this->assertNotNull($this->fakeBaseCollection[0]->value);
