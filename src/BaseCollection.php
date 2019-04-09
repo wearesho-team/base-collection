@@ -9,13 +9,13 @@ namespace Wearesho;
 abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 {
     /**
-     * @param array $elements
+     * @param iterable $elements
      * @param int $flags
      * @param string $iteratorClass
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $elements = [], int $flags = 0, string $iteratorClass = \ArrayIterator::class)
+    public function __construct(iterable $elements = [], int $flags = 0, string $iteratorClass = \ArrayIterator::class)
     {
         foreach ($elements as $element) {
             $this->validate($element);
