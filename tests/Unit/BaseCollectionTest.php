@@ -133,6 +133,20 @@ class BaseCollectionTest extends TestCase
         );
     }
 
+    public function testInstantiateWithArrayObject(): void
+    {
+        $arrayObject = new \ArrayObject([
+            'key' => new \stdClass(),
+            new \stdClass(),
+            new \stdClass(),
+        ]);
+
+        $collection = new $this->fakeBaseCollection($arrayObject);
+
+        $this->assertCount(3, $collection);
+        $this->assertArrayHasKey('key', $collection);
+    }
+
     public function testExchangeArray(): void
     {
         $this->fakeBaseCollection
@@ -165,7 +179,7 @@ class BaseCollectionTest extends TestCase
         $this->assertNotNull($this->fakeBaseCollection[2]->value);
     }
 
-    public function testFAiledExchangeArray(): void
+    public function testFailedExchangeArray(): void
     {
         $this->fakeBaseCollection
             ->append(new \stdClass())
