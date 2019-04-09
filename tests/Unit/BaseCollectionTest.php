@@ -132,4 +132,43 @@ class BaseCollectionTest extends TestCase
             $this->fakeBaseCollection->jsonSerialize()
         );
     }
+
+    public function testJsonSerializeWithProperties(): void
+    {
+        $collection = new class extends BaseCollection
+        {
+            /** @var string */
+            protected $value = 'test-value';
+
+            public function type(): string
+            {
+                return \stdClass::class;
+            }
+
+            public function jsonSerialize(): array
+            {
+                return [
+                    'value' => $this->value,
+                    'elements' => parent::jsonSerialize()
+                ];
+            }
+        };
+
+        $collection
+            ->append(new \stdClass())
+            ->append(new \stdClass())
+            ->append(new \stdClass());
+
+        $this->assertArraySubset(
+            [
+                'value' => 'test-value',
+                'elements' => [
+                    new \stdClass(),
+                    new \stdClass(),
+                    new \stdClass(),
+                ],
+            ],
+            $collection->jsonSerialize()
+        );
+    }
 }
