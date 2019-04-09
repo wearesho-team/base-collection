@@ -81,6 +81,21 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return $this->getArrayCopy();
     }
 
+    public function map(\Closure $closure): array
+    {
+        return array_map($closure, (array)$this);
+    }
+
+    /**
+     * @param \Closure $callback
+     *
+     * @return int|float|double
+     */
+    public function sum(\Closure $callback)
+    {
+        return array_sum($this->map($callback));
+    }
+
     /**
      * @param mixed $object
      *
