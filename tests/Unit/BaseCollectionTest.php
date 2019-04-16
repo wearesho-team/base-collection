@@ -230,4 +230,12 @@ class BaseCollectionTest extends TestCase
             $collection->jsonSerialize()
         );
     }
+
+    public function testInstantiateWithInternalTypeInt(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element must be an object');
+
+        $this->fakeBaseCollection->append(\mt_rand());
+    }
 }
