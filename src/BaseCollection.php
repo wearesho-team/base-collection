@@ -17,9 +17,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
      */
     public function __construct(iterable $elements = [], int $flags = 0, string $iteratorClass = \ArrayIterator::class)
     {
-        foreach ($elements as $element) {
-            $this->validate($element);
-        }
+        $this->validateIterable($elements);
 
         parent::__construct($elements, $flags, $iteratorClass);
     }
@@ -69,9 +67,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
             throw new \InvalidArgumentException("Input must be an iterable element");
         }
 
-        foreach ($input as $item) {
-            $this->validate($item);
-        }
+        $this->validateIterable($input);
 
         return parent::exchangeArray($input);
     }
@@ -92,6 +88,13 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 
         if (!$object instanceof $needType) {
             throw new \InvalidArgumentException("Element " . get_class($object) . " must be instance of " . $needType);
+        }
+    }
+
+    protected function validateIterable(iterable $input): void
+    {
+        foreach ($input as $element) {
+            $this->validate($element);
         }
     }
 }
