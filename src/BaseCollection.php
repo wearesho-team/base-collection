@@ -88,10 +88,14 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
      */
     protected function validate($object): void
     {
-        $needType = $this->type();
+        $type = $this->type();
 
-        if (!$object instanceof $needType) {
-            throw new \InvalidArgumentException("Element " . get_class($object) . " must be instance of " . $needType);
+        if (!$object instanceof $type) {
+            if (!\is_object($object)) {
+                throw new \InvalidArgumentException("Element must be an object");
+            }
+
+            throw new \InvalidArgumentException("Element " . \get_class($object) . " must be instance of {$type}");
         }
     }
 }
