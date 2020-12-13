@@ -3,12 +3,15 @@
   "description": "Typed collection based on ArrayObject",
   "type": "library",
   "require": {
-    "php": "^7.1",
+    "php": "^7.1 || ^8.0",
     "ext-json": "*"
   },
   "require-dev": {
+    "phpstan/phpstan": "^0.12.60",
+    "phpunit/phpunit": "^7.4 || ^8.0 || ^9.0",
+    "psalm/plugin-phpunit": "^0.15.0",
     "squizlabs/php_codesniffer": "^3.3",
-    "phpunit/phpunit": "^7.4"
+    "vimeo/psalm": "^4.3"
   },
   "authors": [
     {
@@ -31,14 +34,29 @@
     "process-timeout": 1800,
     "sort-packages": true,
     "platform": {
-      "php": "7.2"
+      "php": "7.4"
     }
   },
   "scripts": {
-    "lint": "phpcs --standard=PSR2 ./src ./tests",
+    "phpcs": "phpcs --standard=PSR2 ./src/ ./tests/",
     "phpcbf": "phpcbf --standard=PSR2 ./src ./tests",
     "cover": "phpunit --coverage-clover=coverage.xml",
-    "test": "phpunit"
+    "test": "phpunit --order-by=random --columns max",
+    "phpstan": "phpstan analyse src tests",
+    "psalm": "psalm --threads=8 -c=psalm.xml",
+    "lint": [
+      "@phpcs",
+      "@phpstan",
+      "@psalm"
+    ],
+    "build": [
+      "@lint",
+      "@test"
+    ],
+    "build-cover": [
+      "@lint",
+      "@cover"
+    ]
   },
   "license": "MIT"
 }

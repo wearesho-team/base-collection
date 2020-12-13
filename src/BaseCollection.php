@@ -1,44 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho;
 
 /**
  * Class BaseCollection
  * @package Wearesho
+ *
+ * @template T of object
+ * @extends \ArrayObject<array-key, T>
  */
 abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 {
     /**
-     * @param iterable $elements
+     * @psalm-param iterable<array-key, T> $elements
      * @param int $flags
-     * @param string $iteratorClass
+     * @phpstan-param class-string<\ArrayIterator<array-key, T>> $iteratorClass
      *
      * @throws \InvalidArgumentException
      */
     public function __construct(iterable $elements = [], int $flags = 0, string $iteratorClass = \ArrayIterator::class)
     {
-        foreach ($elements as $element) {
+        $validatedItems = [];
+
+        foreach ($elements as $key => $element) {
             $this->validate($element);
+
+            $validatedItems[$key] = $element;
         }
 
-        parent::__construct($elements, $flags, $iteratorClass);
+        parent::__construct($validatedItems, $flags, $iteratorClass);
     }
 
     /**
      * Override to customize type of your collection.
      * Must return declared class name
      *
-     * @return string
+     * @return class-string<T>
      */
     abstract public function type(): string;
 
     /**
-     * @param mixed $value
+     * @param T $value
      *
-     * @return BaseCollection|static
+     * @return self<T>
      * @throws \InvalidArgumentException
      */
-    public function append($value): BaseCollection
+    public function append($value): self
     {
         $this->validate($value);
 
@@ -48,13 +57,13 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
     }
 
     /**
-     * @param mixed $index
-     * @param mixed $value
+     * @param array-key $index
+     * @param T         $value
      *
-     * @return BaseCollection|static
+     * @return self<T>
      * @throws \InvalidArgumentException
      */
-    public function offsetSet($index, $value): BaseCollection
+    public function offsetSet($index, $value): self
     {
         $this->validate($value);
 
@@ -63,6 +72,11 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @param iterable<array-key, T> $input
+     *
+     * @return array<array-key, T>
+     */
     public function exchangeArray($input): array
     {
         if (!\is_iterable($input)) {
@@ -73,16 +87,22 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
             $this->validate($item);
         }
 
-        return parent::exchangeArray($input);
+        /** @phpstan-var array<array-key, T> $arr */
+        $arr = parent::exchangeArray((array) $input);
+
+        return $arr;
     }
 
+    /**
+     * @return array<array-key, T>
+     */
     public function jsonSerialize(): array
     {
         return $this->getArrayCopy();
     }
 
     /**
-     * @param mixed $object
+     * @param T $object
      *
      * @throws \InvalidArgumentException
      */
@@ -91,7 +111,7 @@ abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
         $needType = $this->type();
 
         if (!$object instanceof $needType) {
-            throw new \InvalidArgumentException("Element " . get_class($object) . " must be instance of " . $needType);
+            throw new \InvalidArgumentException("Element " . \get_class($object) . " must be instance of " . $needType);
         }
     }
 }

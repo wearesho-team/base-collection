@@ -1,30 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Wearesho\BaseCollection;
+use Wearesho\Tests\Unit\Mock\StdCollectionMock;
 
 /**
  * Class BaseCollectionTest
  * @package Wearesho\Tests\Unit
+ *
  * @coversDefaultClass \Wearesho\BaseCollection
  * @internal
  */
 class BaseCollectionTest extends TestCase
 {
-    /** @var BaseCollection */
-    protected $fakeBaseCollection;
+    protected StdCollectionMock $fakeBaseCollection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->fakeBaseCollection = new class extends BaseCollection
-        {
-            public function type(): string
-            {
-                return \stdClass::class;
-            }
-        };
+        $this->fakeBaseCollection = new StdCollectionMock();
     }
 
     public function testGetType(): void
@@ -55,7 +52,7 @@ class BaseCollectionTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Element Exception must be instance of stdClass');
 
-        $this->fakeBaseCollection = new $this->fakeBaseCollection([new \Exception()]);
+        $this->fakeBaseCollection = new StdCollectionMock([new \Exception()]); // @phpstan-ignore-line
     }
 
     public function testSuccessAppend(): void
@@ -86,7 +83,7 @@ class BaseCollectionTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Element Exception must be instance of stdClass');
 
-        $this->fakeBaseCollection->append(new \Exception());
+        $this->fakeBaseCollection->append(new \Exception()); // @phpstan-ignore-line
     }
 
     public function testSuccessOffsetSet(): void
@@ -113,7 +110,7 @@ class BaseCollectionTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Element Exception must be instance of stdClass');
 
-        $this->fakeBaseCollection->offsetSet(0, new \Exception());
+        $this->fakeBaseCollection->offsetSet(0, new \Exception()); // @phpstan-ignore-line
     }
 
     public function testJsonSerialize(): void
@@ -123,7 +120,7 @@ class BaseCollectionTest extends TestCase
             ->append(new \stdClass())
             ->append(new \stdClass());
 
-        $this->assertArraySubset(
+        $this->assertEquals(
             [
                 new \stdClass(),
                 new \stdClass(),
@@ -174,9 +171,9 @@ class BaseCollectionTest extends TestCase
             ],
             $oldCollection
         );
-        $this->assertNotNull($this->fakeBaseCollection[0]->value);
-        $this->assertNotNull($this->fakeBaseCollection[1]->value);
-        $this->assertNotNull($this->fakeBaseCollection[2]->value);
+        $this->assertNotNull($this->fakeBaseCollection[0]->value); // @phpstan-ignore-line
+        $this->assertNotNull($this->fakeBaseCollection[1]->value); // @phpstan-ignore-line
+        $this->assertNotNull($this->fakeBaseCollection[2]->value); // @phpstan-ignore-line
     }
 
     public function testFailedExchangeArray(): void
@@ -189,15 +186,14 @@ class BaseCollectionTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Input must be an iterable element');
 
-        $this->fakeBaseCollection->exchangeArray("invalid data");
+        $this->fakeBaseCollection->exchangeArray("invalid data"); // @phpstan-ignore-line
     }
 
     public function testJsonSerializeWithProperties(): void
     {
         $collection = new class extends BaseCollection
         {
-            /** @var string */
-            protected $value = 'test-value';
+            protected string $value = 'test-value';
 
             public function type(): string
             {
@@ -206,7 +202,7 @@ class BaseCollectionTest extends TestCase
 
             public function jsonSerialize(): array
             {
-                return [
+                return [ // @phpstan-ignore-line
                     'value' => $this->value,
                     'elements' => parent::jsonSerialize()
                 ];
@@ -218,7 +214,7 @@ class BaseCollectionTest extends TestCase
             ->append(new \stdClass())
             ->append(new \stdClass());
 
-        $this->assertArraySubset(
+        $this->assertEquals(
             [
                 'value' => 'test-value',
                 'elements' => [
