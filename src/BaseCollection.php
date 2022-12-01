@@ -1,18 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho;
 
-/**
- * Class BaseCollection
- * @package Wearesho
- */
 abstract class BaseCollection extends \ArrayObject implements \JsonSerializable
 {
     /**
-     * @param iterable $elements
-     * @param int $flags
-     * @param string $iteratorClass
-     *
      * @throws \InvalidArgumentException
      */
     public function __construct(iterable $elements = [], int $flags = 0, string $iteratorClass = \ArrayIterator::class)

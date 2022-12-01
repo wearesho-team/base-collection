@@ -5,18 +5,11 @@ namespace Wearesho\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Wearesho\BaseCollection;
 
-/**
- * Class BaseCollectionTest
- * @package Wearesho\Tests\Unit
- * @coversDefaultClass \Wearesho\BaseCollection
- * @internal
- */
 class BaseCollectionTest extends TestCase
 {
-    /** @var BaseCollection */
-    protected $fakeBaseCollection;
+    protected BaseCollection $fakeBaseCollection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fakeBaseCollection = new class extends BaseCollection
         {
@@ -123,7 +116,7 @@ class BaseCollectionTest extends TestCase
             ->append(new \stdClass())
             ->append(new \stdClass());
 
-        $this->assertArraySubset(
+        $this->assertEquals(
             [
                 new \stdClass(),
                 new \stdClass(),
@@ -218,7 +211,7 @@ class BaseCollectionTest extends TestCase
             ->append(new \stdClass())
             ->append(new \stdClass());
 
-        $this->assertArraySubset(
+        $this->assertEquals(
             [
                 'value' => 'test-value',
                 'elements' => [
